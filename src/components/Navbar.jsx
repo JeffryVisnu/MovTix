@@ -10,7 +10,7 @@ function Navbar() {
         <div className="logo-container">
           <div className="logo-square">MT</div>
         </div>
-        <span className="logo-text">MovieTix</span>
+        <span className="logo-text">MovieTi</span>
       </div>
     </nav>
   );
