@@ -27,7 +27,7 @@ const movies = [
     poster: "/poster/fdblood.jpg",
     rating: 4.4,
     durasi: 120,
-    umur: "R13+",
+    umur: "D17+",
     dimensi: "2D",
     sinopsis:
       "Kutukan lama kembali ketika sekelompok remaja selamat dari kecelakaan mengerikan, namun mereka mulai mati satu per satu dalam kecelakaan tragis yang tampak tidak mungkin dicegah.",
@@ -38,7 +38,7 @@ const movies = [
     poster: "/poster/sinners.jpeg",
     rating: 3.9,
     durasi: 120,
-    umur: "R13+",
+    umur: "D17+",
     dimensi: "2D",
     sinopsis:
       "Tujuh orang dengan rahasia kelam dikurung dalam sebuah gereja tua. Satu per satu mereka diadili oleh kekuatan misterius berdasarkan dosa yang mereka sembunyikan.",
@@ -82,7 +82,7 @@ const movies = [
     poster: "/poster/joker.jpg",
     rating: 4.8,
     durasi: 120,
-    umur: "R13+",
+    umur: "D17+",
     dimensi: "2D",
     sinopsis:
       "Kisah gelap tentang Arthur Fleck, seorang komedian gagal yang terjerumus ke dalam kegilaan dan menjadi simbol kekacauan di Gotham City.",

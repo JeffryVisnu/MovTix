@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import movies from "../data/movies";
 import cinemas from "../data/cinemas";
@@ -6,6 +6,7 @@ import "./MovieDetail.css";
 
 function MovieDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const movie = movies.find((m) => m.id === parseInt(id));
   const [showFull, setShowFull] = useState(false);
 
@@ -16,6 +17,22 @@ function MovieDetail() {
   const sentences = movie.sinopsis.split(".");
   const preview = sentences[0] + (sentences.length > 1 ? "." : "");
   const full = movie.sinopsis;
+
+  const handleShowtimeClick = (cinema, time) => {
+    // Simpan sesi film ke localStorage
+    localStorage.setItem(
+      "movieSession",
+      JSON.stringify({
+        cinemaId: cinema.id_cinemas,
+        cinemaName: cinema.nama,
+        date: cinema.tanggal,
+        time: time,
+        price: cinema.harga,
+        seatCount: cinema.seatCount
+      })
+    );
+    navigate(`/movie/${movie.id}/pilihKursi`);
+  };
 
   return (
     <div className="movie-detail-container">
@@ -62,7 +79,12 @@ function MovieDetail() {
             </div>
             <div className="showtime-buttons">
               {cinema.times.map((time) => (
-                <button key={time}>{time}</button>
+                <button
+                  key={time}
+                  onClick={() => handleShowtimeClick(cinema, time)}
+                >
+                  {time}
+                </button>
               ))}
             </div>
           </div>
