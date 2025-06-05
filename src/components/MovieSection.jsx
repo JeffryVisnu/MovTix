@@ -1,6 +1,6 @@
 import MovieCard from "./MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
