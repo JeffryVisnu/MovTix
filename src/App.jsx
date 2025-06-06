@@ -6,7 +6,8 @@ import MovieSection from "./components/MovieSection";
 import MovieDetail from "./components/MovieDetail";
 import movies from "./data/movies";
 import SeatPlan from "./components/seatPlan";
-import PaymentPage from "./components/PaymentPage"; // Tambahkan ini
+import PaymentPage from "./components/PaymentPage";
+import ConfirmationPage from "./components/confirmationPage";
 
 function SeatPlanWrapper() {
   const { id } = useParams();
@@ -19,7 +20,6 @@ function SeatPlanWrapper() {
   return <SeatPlan movie={movie} />;
 }
 
-// Error boundary sederhana
 function ErrorBoundary({ children }) {
   try {
     return children;
@@ -48,8 +48,9 @@ function App() {
           }
         />
         <Route path="/movie/:id" element={<MovieDetail />} />
-        <Route path="/movie/:id/pilihKursi" element={<SeatPlanWrapper key={window.location.pathname} />} />
-        <Route path="/movie/:id/payment" element={<PaymentPage />} /> {/* Tambahkan ini */}
+        <Route path="/movie/:id/selectSeat" element={<SeatPlanWrapper key={window.location.pathname} />} />
+        <Route path="/movie/:id/payment" element={<PaymentPage />} />
+        <Route path="/movie/:id/orderSummary" element={<ConfirmationPage />} />
       </Routes>
     </Router>
   );

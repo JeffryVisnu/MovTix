@@ -19,7 +19,6 @@ function MovieDetail() {
   const full = movie.sinopsis;
 
   const handleShowtimeClick = (cinema, time) => {
-    // Simpan sesi film ke localStorage
     localStorage.setItem(
       "movieSession",
       JSON.stringify({
@@ -31,7 +30,7 @@ function MovieDetail() {
         seatCount: cinema.seatCount
       })
     );
-    navigate(`/movie/${movie.id}/pilihKursi`);
+    navigate(`/movie/${movie.id}/selectSeat`);
   };
 
   return (
@@ -51,7 +50,7 @@ function MovieDetail() {
                 className="toggle-sinopsis"
                 onClick={() => setShowFull(!showFull)}
               >
-                {showFull ? "Sembunyikan" : "Baca selengkapnya"}
+                {showFull ? "See Less" : "See More"}
               </span>
             )}
           </p>

@@ -1,43 +1,36 @@
 import "./PaymentPage.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import BuyTickets from "./BuyTickets";
 import movies from "../data/movies";
 
 function PaymentPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [selectedPayment, setSelectedPayment] = useState("");
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-  // Ambil data order dari localStorage
   const order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
   const movie = movies.find((m) => m.id === parseInt(id));
 
-  const handlePayNow = async () => {
+    const handlePayNow = async () => {
+    console.log("Payment button pressed"); 
     if (selectedPayment) {
-      // Kirim order ke backend
-      const success = await BuyTickets(BASE_URL, order);
+      console.log("Selected payment method:", selectedPayment);
+      const success = true;
       if (success) {
-        alert("Pembayaran berhasil dengan metode: " + selectedPayment);
-        // Bersihkan order
-        localStorage.removeItem("pendingOrder");
-        navigate("/");
+        alert("Payment successful using: " + selectedPayment);
+        console.log("Navigating to confirmation page...");
+        navigate(`/movie/${id}/orderSummary`);
       } else {
-        alert("Pembayaran gagal, silakan coba lagi.");
+        alert("Payment failed, please try again.");
       }
     } else {
-      alert("Pilih metode pembayaran terlebih dahulu.");
+      alert("Please select a payment method.");
     }
   };
 
-  // Format kursi
-  const seatLabel = (s) =>
-    String.fromCharCode(65 + Math.floor(s / 8)) + ((s % 8) + 1);
-
   return (
     <div className="payment-container">
-      <div className="header">Ringkasan Order</div>
+      <div className="header">Transaction Detail</div>
       <div className="ticket-summary">
         <img
           src={order.poster || (movie && movie.poster)}
@@ -57,21 +50,19 @@ function PaymentPage() {
       </div>
 
       {/* Detail Transaksi */}
-      <div className="section-title">Detail Transaksi</div>
+      <div className="section-title">Seat Detail</div>
       <div className="details-section ticket-style">
         <div className="details-left">
           <div className="details-row">
             <span className="details-label">
-              {order.seat && order.seat.length} Tiket
+              {order.seat && order.seat.length} Tickets
             </span>
-            <span className="details-value">
-              {order.seat
-                ? order.seat.map(seatLabel).join(", ")
-                : "-"}
+              <span className="details-value">
+              {order.seat ? order.seat.map((seat) => seat + 1).join(", ") : "-"}
             </span>
           </div>
           <div className="details-row">
-            <span className="details-label">Kursi Reguler</span>
+            <span className="details-label">Regular Seat</span>
             <span className="details-value">
               {order.price && order.seat
                 ? "Rp" +
@@ -97,7 +88,7 @@ function PaymentPage() {
       <div className="ticket-divider"></div>
 
       {/* Metode Pembayaran */}
-      <div className="section-title">Metode Pembayaran</div>
+      <div className="section-title">Payment Methods</div>
       <div className="payment-methods">
         <label className="payment-radio">
           <input
@@ -129,25 +120,25 @@ function PaymentPage() {
           <span className="radio-label">ShopeePay</span>
           <span className="radio-dot" />
         </label>
-        <div className="more-methods">Pilih Metode Pembayaran Lainnya &gt;</div>
+        <div className="more-methods">Choose Another Payment Methods --&gt;</div>
       </div>
 
       {/* Promo/Voucher */}
-      <div className="section-title">Promo/Voucher</div>
+      <div className="section-title">Promos/Vouchers</div>
       <div className="promo-section">
         <p className="no-promo">
-          Waduh! sayangnya lagi tidak ada voucher/promo untuk saat ini
+          Oops! Unfortunately, there are no vouchers or promos available at the moment.
         </p>
         <ul className="warnings">
-          <li>Pembelian tiket tidak bisa dibatalkan/dirubah</li>
-          <li>Untuk anak usia 2 tahun keatas wajib membeli tiket</li>
-          <li>Tontonlah film sesuai kategori usia</li>
+          <li>Tickets cannot be canceled or changed.</li>
+          <li>Children aged 2 and above are required to purchase a ticket.</li>
+          <li>Please watch movies according to the age rating.</li>
         </ul>
       </div>
 
       {/* Total Bayar */}
       <div className="total-section">
-        <p>Total Bayar</p>
+        <p>Total</p>
         <p>
           Rp
           {order.total
@@ -160,7 +151,7 @@ function PaymentPage() {
       </div>
 
       <button className="pay-button" onClick={handlePayNow}>
-        SELESAIKAN PEMBAYARAN ANDA
+        COMPLETE YOUR PAYMENT
       </button>
     </div>
   );

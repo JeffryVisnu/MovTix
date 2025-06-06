@@ -34,7 +34,7 @@ function SeatSelector({
 
   return (
     <div className='Cinema'>
-      <div className='screen'>LAYAR</div>
+      <div className='screen'>SCREEN</div>
       <div className='seats'>
         {seats.map((seat) => {
           const isSelected = selectedSeats.includes(seat);

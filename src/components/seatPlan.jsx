@@ -17,7 +17,6 @@ function SeatPlan({ movie }) {
   const [userId, setUserId] = useState('');
   const [alertMsg, setAlertMsg] = useState('');
 
-  // Ambil data user & session setiap movie atau location berubah
   useEffect(() => {
     const storedMovieSession = JSON.parse(localStorage.getItem('movieSession'));
     if (storedMovieSession) {
@@ -32,13 +31,11 @@ function SeatPlan({ movie }) {
 
   const seatCount = DEFAULT_SEAT_COUNT;
 
-  // occupiedSeats hanya di-generate sekali per sesi movie/jadwal
   const occupiedSeats = useMemo(
     () => generateRandomOccupiedSeats(15, 20, seatCount),
     [seatCount]
   );
 
-  // Perbaikan: gunakan useMemo agar tidak berubah setiap render!
   const filteredAvailableSeats = useMemo(() =>
     Array.from({ length: seatCount }, (_, i) => i).filter(
       (seat) => !occupiedSeats.includes(seat)
@@ -77,35 +74,34 @@ function SeatPlan({ movie }) {
   const seatPrice = movieSession && movieSession.price ? movieSession.price : 40000;
   let totalPrice = selectedSeats.length * seatPrice;
 
-  // PERUBAHAN UTAMA: Simpan order ke localStorage dan navigate ke payment
-  const handleButtonClick = (e) => {
+    const handleButtonClick = (e) => {
     e.preventDefault();
-
+  
     // Simpan data order ke localStorage
-    localStorage.setItem(
-      "pendingOrder",
-      JSON.stringify({
-        movieId: movie.id,
-        movieTitle: movie.title,
-        seat: selectedSeats,
-        price: seatPrice,
-        total: totalPrice,
-        cinemaName: movieSession?.cinemaName,
-        time: movieSession?.time,
-        date: movieSession?.date,
-        poster: movie.poster,
-        umur: movie.umur,
-        userName,
-        userId,
-      })
-    );
-
+    const orderData = {
+      movieId: movie.id,
+      movieTitle: movie.title,
+      seat: selectedSeats,
+      price: seatPrice,
+      total: totalPrice,
+      cinemaName: movieSession?.cinemaName,
+      time: movieSession?.time,
+      date: movieSession?.date,
+      poster: movie.poster,
+      umur: movie.umur,
+      userName,
+      userId,
+    };
+  
+    console.log("Order data:", orderData);
+    localStorage.setItem("pendingOrder", JSON.stringify(orderData));
+  
     navigate(`/movie/${movie.id}/payment`);
   };
 
   function handleSelectedSeatsChange(newSelected) {
     if (newSelected.length > 4) {
-      setAlertMsg('Hanya bisa pilih maksimal 4 kursi!');
+      setAlertMsg('You can only select up to 4 seats!');
       setTimeout(() => setAlertMsg(''), 2000);
       return;
     }
@@ -131,7 +127,7 @@ function SeatPlan({ movie }) {
             <strong className="session-cinema-name">{movieSession.cinemaName}</strong>
             {" — "}
             <span className="session-price">Rp.{seatPrice.toLocaleString('id-ID')}</span> <br />
-            <span className="session-time-label">Session Time: {movieSession.time}</span>
+            <span className="session-time-label">Show Time: {movieSession.time}</span>
             <br />
           </div>
         )}
