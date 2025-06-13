@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function SeatSelector({
   movie,
@@ -33,9 +33,9 @@ function SeatSelector({
   }
 
   return (
-    <div className='Cinema'>
-      <div className='screen'>SCREEN</div>
-      <div className='seats'>
+    <div className="Cinema">
+      <div className="screen">SCREEN</div>
+      <div className="seats">
         {seats.map((seat) => {
           const isSelected = selectedSeats.includes(seat);
           const isOccupied = movie.occupied.includes(seat);
@@ -43,22 +43,22 @@ function SeatSelector({
             ? recommendedSeat.includes(seat) && selectedSeats.length === 0
             : recommendedSeat === seat && selectedSeats.length === 0;
 
-          let seatClass = 'seat';
-          if (isOccupied) seatClass += ' occupied';
-          if (isSelected) seatClass += ' selected';
-          if (isRecommended) seatClass += ' recommended';
+          let seatClass = "seat";
+          if (isOccupied) seatClass += " occupied";
+          if (isSelected) seatClass += " selected";
+          if (isRecommended) seatClass += " recommended";
 
           return (
             <button
               type="button"
-              tabIndex='0'
+              tabIndex="0"
               key={seat}
               className={seatClass}
               onClick={() => !isOccupied && handleSelectedState(seat)}
               onKeyPress={
                 !isOccupied
                   ? (e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         handleSelectedState(seat);
                       }
                     }

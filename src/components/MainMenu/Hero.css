@@ -11,6 +11,7 @@
   color: white;
 }
 
+/* Tambahkan overlay gelap agar teks tetap terbaca */
 .hero-container::before {
   content: "";
   position: absolute;
@@ -25,7 +26,7 @@
 .hero-content {
   padding: 40px;
   max-width: 50%;
-  z-index: 2;
+  z-index: 2; /* agar di atas overlay */
 }
 
 .hero-title {

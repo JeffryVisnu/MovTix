@@ -1,22 +1,69 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import movies from "../data/movies";
-import cinemas from "../data/cinemas";
+import { useState, useEffect } from "react";
 import "./MovieDetail.css";
 
 function MovieDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const movie = movies.find((m) => m.id === parseInt(id));
+
+  const [movie, setMovie] = useState(null);
+  const [cinemas, setCinemas] = useState([]);
   const [showFull, setShowFull] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (!movie) {
+  useEffect(() => {
+    // Fetch movie
+    fetch("http://localhost:8080/film")
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = data.map((film) => ({
+          id: film.idFilm,
+          title: film.judul,
+          genre: film.genre,
+          duration: film.durasi,
+          description: film.deskripsi,
+          releaseDate: film.tanggalRilis,
+          poster: `http://localhost:8080/film/${film.idFilm}/poster`,
+          dimensi: film.dimensi || "2D",
+          umur: film.batas_umur || "13+",
+        }));
+
+        const found = mapped.find((m) => m.id === id);
+        setMovie(found);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Gagal fetch movie:", err);
+        setLoading(false);
+      });
+
+    // Fetch bioskop
+    fetch("http://localhost:8080/bioskop")
+      .then((res) => res.json())
+      .then((data) => {
+        const mappedCinemas = data.map((cinema) => ({
+          id_cinemas: cinema.idBioskop,
+          nama: cinema.namaBioskop,
+          lokasi: cinema.lokasi,
+          tanggal: "2025-06-10", // sementara default
+          harga: 50000, // sementara default
+          seatCount: 100, // sementara default
+          times: ["13:00", "15:30", "18:00"], // sementara default
+        }));
+        setCinemas(mappedCinemas);
+      })
+      .catch((err) => {
+        console.error("Gagal fetch bioskop:", err);
+      });
+  }, [id]);
+
+  if (loading) return <div style={{ padding: "2rem" }}>Loading...</div>;
+  if (!movie)
     return <div style={{ padding: "2rem" }}>Film tidak ditemukan</div>;
-  }
 
-  const sentences = movie.sinopsis.split(".");
+  const sentences = movie.description.split(".");
   const preview = sentences[0] + (sentences.length > 1 ? "." : "");
-  const full = movie.sinopsis;
+  const full = movie.description;
 
   const handleShowtimeClick = (cinema, time) => {
     localStorage.setItem(
@@ -27,7 +74,7 @@ function MovieDetail() {
         date: cinema.tanggal,
         time: time,
         price: cinema.harga,
-        seatCount: cinema.seatCount
+        seatCount: cinema.seatCount,
       })
     );
     navigate(`/movie/${movie.id}/selectSeat`);
@@ -50,12 +97,12 @@ function MovieDetail() {
                 className="toggle-sinopsis"
                 onClick={() => setShowFull(!showFull)}
               >
-                {showFull ? "See Less" : "See More"}
+                {showFull ? "Sembunyikan" : "Baca selengkapnya"}
               </span>
             )}
           </p>
           <p className="movie-duration">
-            <span>🎬</span> {movie.durasi} Minutes
+            <span>🎬</span> {movie.duration} Minutes
           </p>
           <div className="movie-tags">
             <span className="tag">{movie.dimensi}</span>
@@ -69,7 +116,7 @@ function MovieDetail() {
           <div className="cinema-card" key={cinema.id_cinemas}>
             <div className="cinema-header">
               <div>
-                <h4>{cinema.nama}</h4>
+                <h4>{cinema.nama} {cinema.lokasi} </h4>
                 <span className="cinema-date">{cinema.tanggal}</span>
               </div>
               <span className="price">
