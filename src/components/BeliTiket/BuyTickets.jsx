@@ -22,3 +22,4 @@ async function BuyTickets(BASE_URL, formData) {
 }
 
 export default BuyTickets;
+

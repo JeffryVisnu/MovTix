@@ -7,3 +7,4 @@ function generateRandomOccupiedSeats(min, max, seatCount) {
   return Array.from(seats);
 }
 export default generateRandomOccupiedSeats;
+

@@ -205,3 +205,4 @@ function SeatPlan({ movie }) {
 }
 
 export default SeatPlan;
+

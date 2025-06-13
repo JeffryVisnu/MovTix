@@ -93,3 +93,4 @@ function MovieSection({ title }) {
 }
 
 export default MovieSection;
+
