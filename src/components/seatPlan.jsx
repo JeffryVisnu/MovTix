@@ -32,7 +32,7 @@ function SeatPlan({ movie }) {
   const seatCount = DEFAULT_SEAT_COUNT;
 
   const occupiedSeats = useMemo(
-    () => generateRandomOccupiedSeats(15, 20, seatCount),
+    () => generateRandomOccupiedSeats(0, 0, seatCount),
     [seatCount]
   );
 
