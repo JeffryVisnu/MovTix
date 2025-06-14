@@ -28,6 +28,9 @@ function LihatTiket() {
                 <strong>Nama Bioskop:</strong> {t.namaBioskop}
               </p>
               <p>
+                <strong>Nama Bioskop:</strong> {t.alamatBioskop}
+              </p>
+              <p>
                 <strong>Jam Tayang:</strong> {t.jamTayang}
               </p>
               <p>
